@@ -13,7 +13,5 @@ public class CreateTicketDto
       public List<Image> Image {get;set;}
       public string UserReference {get;set;}
       public string Status {get; internal set;}
-      public DateTime TimeStamp { get; set; }
-      
-      
+      public DateTime TimeStamp { get; set; }     
    }

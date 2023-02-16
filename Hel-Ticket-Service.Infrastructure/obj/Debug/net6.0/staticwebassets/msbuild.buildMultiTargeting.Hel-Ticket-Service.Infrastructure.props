@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Hel-Ticket-Service.Infrastructure.props" />
+</Project>

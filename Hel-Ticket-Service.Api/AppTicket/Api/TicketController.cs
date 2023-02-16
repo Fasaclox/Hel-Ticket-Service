@@ -55,6 +55,45 @@ namespace Hel_Ticket_Service.Api;
                 return Ok( await _ticketRepository.SearchTicketList(name, page));
           
         }
-     
+        [HttpGet("user/page/{page:int:min(1)}")]
+        public async Task<ActionResult<List<Ticket>>> GetTicketByUserReference(string userReference, int page)
+        {
+                return Ok( await _ticketRepository.GetTicketByUserReference(userReference, page));
+        }
+        // [HttpGet("user/page/{page:int:min(1)}")]
+        // public async Task<ActionResult<List<Ticket>>> GetALLTicketSByUser(string userReference, int page)
+        // {
+        //         return Ok( await _ticketRepository.GetTicketByUserReference(userReference, page));
+        // }
+        [HttpGet("user/category/page/{page:int:min(1)}")]
+        public async Task<ActionResult<List<Ticket>>> GetTicketsByUserAndCategoryRef(string userReference, string categoryReference, int page)
+        {
+                return Ok( await _ticketRepository.GetTicketsByUserAndCategoryRef(userReference,categoryReference, page));
+        }
+        [HttpGet("user/status/page/{page:int:min(1)}")]
+        public async Task<ActionResult<List<Ticket>>> GetTicketsByUserAndStatus(string userReference, string status, int page)
+        {
+                return Ok( await _ticketRepository.GetTicketsByUserAndStatus(userReference,status, page));
+        }
+        [HttpGet("user/category/status/page/{page:int:min(1)}")]
+        public async Task<ActionResult<List<Ticket>>> GetTicketsByUserCategoryRefAndStatus(string userReference, string categoryRef, string status, int page)
+        {
+                return Ok( await _ticketRepository.GetTicketsByUserCategoryRefAndStatus(userReference, categoryRef, status, page));
+        }
+        // [HttpGet("user/status/page/{page:int:min(1)}")]
+        // public async Task<ActionResult<List<Ticket>>> GetTicketsByUserReferenceAndStatus(string userReference, string status, int page)
+        // {
+        //         return Ok( await _ticketRepository.GetTicketsByUserReferenceAndStatus(userReference,status, page));
+        // }
+        [HttpGet("assigned/to/user/is-escalated{is_escalated}")]
+        public async Task<ActionResult<List<Ticket>>> GetEscalatedTicketsByUser(string userReference)
+        {
+                return Ok( await _ticketRepository.GetEscalatedTicketsByUser(userReference));
+        }
+        [HttpGet("user/recent")]
+        public async Task<ActionResult<List<Ticket>>> GetMostRecentTicketsByUser(string userReference)
+        {
+                return Ok( await _ticketRepository.GetMostRecentTicketsByUser(userReference));
+        }
     }
 

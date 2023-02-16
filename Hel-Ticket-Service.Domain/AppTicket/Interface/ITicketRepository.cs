@@ -10,7 +10,14 @@ public interface ITicketRepository{
     Task<List<Ticket>> GetTicketByCategoryReference(string categoryference, int page);
     //Task<List<Ticket>> GetTicketList(string name,int page);
     Task<List<Ticket>> SearchTicketList(string name,  int page);
-    
+    Task<List<Ticket>> GetTicketByUserReference(string userReference, int page);
+    Task<List<Ticket>> GetAllTicketsByUser(string userReference, int page);
+    Task<List<Ticket>> GetTicketsByUserAndCategoryRef(string userReference, string CategoryReference, int page);
+    Task<List<Ticket>> GetTicketsByUserAndStatus(string userReference, string status, int page);
+    Task<List<Ticket>> GetTicketsByUserCategoryRefAndStatus(string userReference, string categoryRef, string status, int page);
+    Task<List<Ticket>> GetTicketsByUserReferenceAndStatus(string userReference, string status, int page);
+    Task<List<Ticket>> GetEscalatedTicketsByUser(string userReference);
+    Task<List<Ticket>> GetMostRecentTicketsByUser(string userReference);
     #endregion
 }
 

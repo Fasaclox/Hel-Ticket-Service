@@ -170,4 +170,186 @@ public class TicketRepository: ITicketRepository
             throw new AppException(new[]{e.Message}, "DATABASE",500);
         }
     }
+    public async Task<List<Ticket>> GetTicketByUserReference(string userReference, int page)
+    {
+        try
+        {
+            Log.Information($"searching data by page {page}");
+            var data = await _cacheProvider.GetFromCache<List<Ticket>>($"{page}");
+            if(data is not null){
+                return data;
+            }
+            var filterBuilder = Builders<Ticket>.Filter;
+            var userReferenceFilter = filterBuilder.Eq(x=> x.UserReference, userReference);
+
+            var filter = userReferenceFilter;
+            data = await _ticket.Find(filter).Skip((page-1)* _dbProvider.GetPageLimit())
+            .Limit(_dbProvider.GetPageLimit()).ToListAsync();
+            return data;
+        }
+        catch(Exception ex)
+        {
+            Log.Error($"error searching ticket: {ex.Message}");
+            throw new AppException(new[]{ex.Message}, "DATABASE", 500);
+        }
+    }
+    public async Task<List<Ticket>> GetAllTicketsByUser(string userReference, int page)
+    {
+        try
+        {
+            Log.Information($"searching data by page {page}");
+            var data = await _cacheProvider.GetFromCache<List<Ticket>>($"{page}");
+            if(data is not null){
+                return data;
+            }
+            var filterBuilder = Builders<Ticket>.Filter;
+            var userReferenceFilter = filterBuilder.Eq(x=> x.UserReference, userReference);
+
+            var filter = userReferenceFilter;
+            data = await _ticket.Find(filter).Skip((page-1)* _dbProvider.GetPageLimit())
+            .Limit(_dbProvider.GetPageLimit()).ToListAsync();
+            return data;
+        }
+        catch(Exception ex)
+        {
+            Log.Error($"error searching ticket: {ex.Message}");
+            throw new AppException(new[]{ex.Message}, "DATABASE", 500);
+        }
+    }
+    public async Task<List<Ticket>> GetTicketsByUserAndCategoryRef(string userReference, string CategoryReference, int page)
+    {
+        try
+        {
+            Log.Information($"searching data by page {page}");
+            var data = await _cacheProvider.GetFromCache<List<Ticket>>($"{page}");
+            if(data is not null){
+                return data;
+            }
+            var filterBuilder = Builders<Ticket>.Filter;
+            var userReferenceFilter = filterBuilder.Eq(x=> x.UserReference, userReference);
+            var categoryReferenceFilter = filterBuilder.Eq(x=> x.CategoryReference, CategoryReference);
+            var filter = userReferenceFilter & categoryReferenceFilter;
+            data = await _ticket.Find(filter).Skip((page-1)* _dbProvider.GetPageLimit())
+            .Limit(_dbProvider.GetPageLimit()).ToListAsync();
+            return data;
+        }
+        catch(Exception ex)
+        {
+            Log.Error($"error searching ticket: {ex.Message}");
+            throw new AppException(new[]{ex.Message}, "DATABASE", 500);
+        }
+    }
+     public async Task<List<Ticket>> GetTicketsByUserAndStatus(string userReference, string status, int page)
+    {
+        try
+        {
+            Log.Information($"searching data by page {page}");
+            var data = await _cacheProvider.GetFromCache<List<Ticket>>($"{page}");
+            if(data is not null){
+                return data;
+            }
+            var filterBuilder = Builders<Ticket>.Filter;
+            var userReferenceFilter = filterBuilder.Eq(x=> x.UserReference, userReference);
+            var statusFilter = filterBuilder.Eq(x=> x.Status, status);
+            var filter = userReferenceFilter & statusFilter;
+            data = await _ticket.Find(filter).Skip((page-1)* _dbProvider.GetPageLimit())
+            .Limit(_dbProvider.GetPageLimit()).ToListAsync();
+            return data;
+        }
+        catch(Exception ex)
+        {
+            Log.Error($"error searching ticket: {ex.Message}");
+            throw new AppException(new[]{ex.Message}, "DATABASE", 500);
+        }
+    }
+     public async Task<List<Ticket>> GetTicketsByUserCategoryRefAndStatus(string userReference, string categoryRef, string status, int page)
+    {
+        try
+        {
+            Log.Information($"searching data by page {page}");
+            var data = await _cacheProvider.GetFromCache<List<Ticket>>($"{page}");
+            if(data is not null){
+                return data;
+            }
+            var filterBuilder = Builders<Ticket>.Filter;
+            var userReferenceFilter = filterBuilder.Eq(x=> x.UserReference, userReference);
+            var statusFilter = filterBuilder.Eq(x=> x.Status, status);
+            var categoryFilter = filterBuilder.Eq(x=> x.CategoryReference, categoryRef);
+            var filter = (userReferenceFilter & statusFilter & categoryFilter);
+            data = await _ticket.Find(filter).Skip((page-1)* _dbProvider.GetPageLimit())
+            .Limit(_dbProvider.GetPageLimit()).ToListAsync();
+            return data;
+        }
+        catch(Exception ex)
+        {
+            Log.Error($"error searching ticket: {ex.Message}");
+            throw new AppException(new[]{ex.Message}, "DATABASE", 500);
+        }
+    }
+     public async Task<List<Ticket>> GetTicketsByUserReferenceAndStatus(string userReference, string status, int page)
+    {
+        try
+        {
+            Log.Information($"searching data by page {page}");
+            var data = await _cacheProvider.GetFromCache<List<Ticket>>($"{page}");
+            if(data is not null){
+                return data;
+            }
+            var filterBuilder = Builders<Ticket>.Filter;
+            var userReferenceFilter = filterBuilder.Eq(x=> x.UserReference, userReference);
+            var statusFilter = filterBuilder.Eq(x=> x.Status, status);
+            var filter = userReferenceFilter & statusFilter;
+            data = await _ticket.Find(filter).Skip((page-1)* _dbProvider.GetPageLimit())
+            .Limit(_dbProvider.GetPageLimit()).ToListAsync();
+            return data;
+        }
+        catch(Exception ex)
+        {
+            Log.Error($"error searching ticket: {ex.Message}");
+            throw new AppException(new[]{ex.Message}, "DATABASE", 500);
+        }
+    }
+    public async Task<List<Ticket>> GetEscalatedTicketsByUser(string userReference)
+    {
+        try
+        {
+            Log.Information($"searching data by page");
+            var data = await _cacheProvider.GetFromCache<List<Ticket>>(userReference);
+            if(data is not null){
+                return data;
+            }
+            var filterBuilder = Builders<Ticket>.Filter;
+            var userReferenceFilter = filterBuilder.Eq(x=> x.UserReference, userReference);
+            var escalatedFilter = filterBuilder.Eq(x=> x.IsEscalted, true);
+            var filter = userReferenceFilter & escalatedFilter;
+            data = await _ticket.Find(filter).ToListAsync();
+            return data;
+        }
+        catch(Exception ex)
+        {
+            Log.Error($"error searching ticket: {ex.Message}");
+            throw new AppException(new[]{ex.Message}, "DATABASE", 500);
+        }
+    }
+      public async Task<List<Ticket>> GetMostRecentTicketsByUser(string userReference)
+    {
+        try
+        {
+            Log.Information($"searching data by page");
+            var data = await _cacheProvider.GetFromCache<List<Ticket>>(userReference);
+            if(data is not null){
+                return data;
+            }
+            var filterBuilder = Builders<Ticket>.Filter;
+            var userReferenceFilter = filterBuilder.Eq(x=> x.UserReference, userReference);
+            data = await _ticket.Find(userReferenceFilter).SortByDescending(x=>x.TimeStamp).Limit(10).ToListAsync();
+            return data;
+        }
+        catch(Exception ex)
+        {
+            Log.Error($"error searching ticket: {ex.Message}");
+            throw new AppException(new[]{ex.Message}, "DATABASE", 500);
+        }
+    }
+
 }
